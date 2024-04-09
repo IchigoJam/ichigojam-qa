@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><link rel="icon" href="data:">
+<title>IchigoJam Q&A</title>
+</head><body>
+<h1>IchigoJam Q&A</h1>
+<input type=text id=inkey placeholder=絞り込み><br>
+<main id=main>
+</main>
+
+<footer>
+<a href=https://github.com/ichigojam/ichigojam-qa/main/QA.csv>QA.csv</a>
+<a href=https://github.com/ichigojam/ichigojam-qa/>src on GitHub</a>
+</footr>
+
+<script type="module">
+import { CSV } from "https://js.sabae.cc/CSV.js";
+
+const data = await CSV.fetchJSON("QA.csv");
+const show = () => {
+  main.innerHTML = "";
+  const key = inkey.value;
+  for (const d of data) {
+    if (!key || d.Q.indexOf(key) >= 0 || d.A.indexOf(key) >= 0) {
+      const div = document.createElement("div");
+      main.appendChild(div);
+      const divq = document.createElement("div");
+      divq.textContent = d.Q;
+      div.appendChild(divq);
+      const diva = document.createElement("div");
+      diva.textContent = d.A;
+      div.appendChild(diva);
+    }
+  }
+};
+show();
+inkey.oninput = show;
+</script>
+
+<style>
+body {
+  font-family: sans-serif;
+}
+input {
+  font-size: 16px;
+  margin: 0.3em 0;
+}
+main > div {
+  border: 1px solid #f88;
+  border-radius: .5em;
+  margin: .2em;
+  padding: .2em 1.2em;
+}
+main > div > div {
+  white-space: pre-wrap;
+}
+main > div > div:first-child {
+  font-weight: bold;
+  margin-left: -.5em;
+}
+a {
+  color: gray !important;
+}
+</style>
